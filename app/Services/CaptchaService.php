@@ -6,6 +6,7 @@ use App\Http\Requests\Api\CaptchaRequest;
 use App\Http\Requests\Api\VerifyCaptchaRequest;
 use Gregwar\Captcha\CaptchaBuilder;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 
 
 /**
@@ -16,16 +17,22 @@ use Illuminate\Support\Facades\Cache;
 class CaptchaService
 {
 
+    protected $captchaBuilder;
+
+    public function __construct(CaptchaBuilder $captchaBuilder)
+    {
+        $this->captchaBuilder = $captchaBuilder;
+    }
+    
     /*
      * 获取 图片 验证码
      * @param phone 手机号码
      * */
-    public function send(CaptchaRequest $request, CaptchaBuilder $captchaBuilder)
+    public function getCaptcha($phone, $width, $height)
     {
         $key = 'captcha-' . Str::random(15);
-        $phone = $request->phone;
-        $captcha = $captchaBuilder->build();
-        $expiredAt = now()->addMinutes(2);
+        $captcha = $this->captchaBuilder->build($width, $height);
+        $expiredAt = now()->addMinutes(5);
         Cache::put($key, ['phone' => $phone, 'code' => $captcha->getPhrase()], $expiredAt);
         return [
             'captcha_key' => $key,

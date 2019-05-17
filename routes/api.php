@@ -46,8 +46,8 @@ $api->version('v1', [
             ->name('api.getSmsCode');
 
         // 图片验证码
-        $api->post('captchas', 'HelperController@captchas')
-            ->name('api.captchas');
+        $api->post('captchas', 'HelperController@getCaptcha')
+            ->name('api.getCaptcha');
 
     });
 
