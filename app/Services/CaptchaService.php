@@ -23,7 +23,7 @@ class CaptchaService
     {
         $this->captchaBuilder = $captchaBuilder;
     }
-    
+
     /*
      * 获取 图片 验证码
      * @param phone 手机号码
@@ -45,13 +45,13 @@ class CaptchaService
     /*
     * 验证图片验证码
     * */
-    public function verifycaptcha(VerifyCaptchaRequest $request)
+    public function verifycaptcha($captchaKey, $captchaCode, VerifyCaptchaRequest $request)
     {
-        $captchaData = Cache::get($request->captcha_key);
+        $captchaData = Cache::get($captchaKey);
 
         if (!$captchaData) return '图片验证码已失效';
 
-        if (!hash_equals($captchaData['code'], $request->captcha_code)) {
+        if (!hash_equals($captchaData['code'], $captchaCode)) {
             // 验证错误就清除缓存
             Cache::forget($request->captcha_key);
             return '验证码错误';

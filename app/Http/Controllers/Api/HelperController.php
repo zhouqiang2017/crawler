@@ -62,7 +62,11 @@ class HelperController extends Controller
      * */
     public function verifycaptcha(VerifyCaptchaRequest $request)
     {
+        $response = CaptchaService::verifycaptcha($request->captcha_key, $request->captcha_code);
 
+        if (!is_array($response)) return $this->failed($response);
+
+        // 验证通过执行下面的操作  图片验证码验通过 并返回数据 [ "phone" => "17358630294""code" => "5j4lm"]
     }
 
 }
