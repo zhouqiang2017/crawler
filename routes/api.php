@@ -49,6 +49,10 @@ $api->version('v1', [
         $api->post('captchas', 'HelperController@getCaptcha')
             ->name('api.getCaptcha');
 
+        // 小程序登录授权
+        $api->post('authorizations/login', 'UserController@store')
+            ->name('api.authorizations.login');
+
     });
 
 

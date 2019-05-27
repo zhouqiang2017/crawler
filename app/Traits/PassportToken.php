@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
+use Carbon\Carbon;
 use DateTime;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Events\Dispatcher;
@@ -103,4 +104,5 @@ trait PassportToken
 
         return $bearerToken;
     }
+
 }
