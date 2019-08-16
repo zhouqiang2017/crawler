@@ -21,8 +21,18 @@ use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 
 # https://github.com/laravel/passport/issues/71
 
+/**
+ * Trait PassportToken
+ *
+ * @package App\Traits
+ */
 trait PassportToken
 {
+    /**
+     * @param int $length
+     *
+     * @return string
+     */
     private function generateUniqueIdentifier($length = 40)
     {
         try {
@@ -39,6 +49,12 @@ trait PassportToken
         // @codeCoverageIgnoreEnd
     }
 
+    /**
+     * @param \League\OAuth2\Server\Entities\AccessTokenEntityInterface $accessToken
+     *
+     * @return mixed
+     * @throws \League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException
+     */
     private function issueRefreshToken(AccessTokenEntityInterface $accessToken)
     {
         $maxGenerationAttempts = 10;
@@ -62,6 +78,13 @@ trait PassportToken
         }
     }
 
+    /**
+     * @param \App\Models\User $user
+     * @param                  $clientId
+     *
+     * @return array
+     * @throws \League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException
+     */
     protected function createPassportTokenByUser(User $user, $clientId)
     {
         $accessToken = new AccessToken($user->id);
@@ -79,6 +102,12 @@ trait PassportToken
         ];
     }
 
+    /**
+     * @param $accessToken
+     * @param $refreshToken
+     *
+     * @return \League\OAuth2\Server\ResponseTypes\BearerTokenResponse|\Psr\Http\Message\ResponseInterface
+     */
     protected function sendBearerTokenResponse($accessToken, $refreshToken)
     {
         $response = new BearerTokenResponse();
@@ -93,6 +122,14 @@ trait PassportToken
         return $response->generateHttpResponse(new Response);
     }
 
+    /**
+     * @param \App\Models\User $user
+     * @param                  $clientId
+     * @param bool             $output
+     *
+     * @return \League\OAuth2\Server\ResponseTypes\BearerTokenResponse|mixed|\Psr\Http\Message\ResponseInterface
+     * @throws \League\OAuth2\Server\Exception\UniqueTokenIdentifierConstraintViolationException
+     */
     protected function getBearerTokenByUser(User $user, $clientId, $output = true)
     {
         $passportToken = $this->createPassportTokenByUser($user, $clientId);
