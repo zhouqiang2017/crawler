@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UsersImport;
 use App\Jobs\SendEmail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
 {
@@ -36,5 +38,10 @@ class HomeController extends Controller
            dispatch(new SendEmail($user));
         });
         dd('done');
+    }
+
+    public function import()
+    {
+        Excel::import(new UsersImport, 'xlsx/houses.xlsx');
     }
 }

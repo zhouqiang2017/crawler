@@ -17,5 +17,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/queue', 'HomeController@queue')->name('queue');
+Route::get('home', 'HomeController@index')->name('home');
+Route::get('queue', 'HomeController@queue')->name('queue');
+Route::get('user/import', 'HomeController@import')->name('import');
